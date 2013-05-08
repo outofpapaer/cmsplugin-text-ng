@@ -37,7 +37,7 @@ class TextPluginNextGeneration(TextPlugin):
         for label, variable in get_variables_from_template(obj.template.path).items():
             variable['type'].objects.get_or_create(text_ng=obj, label=label)
 
-    def change_view(self, request, object_id, extra_context=None):
+    def change_view(self, request, object_id, extra_context=None, form_url=''):
         obj = self.get_object(request, object_id)
         types = defaultdict(lambda: 0)
         for label, variable in get_variables_from_template(obj.template.path).items():
@@ -50,7 +50,7 @@ class TextPluginNextGeneration(TextPlugin):
             inline.max_num = types[model_class]
             self.inlines.append(inline)
             self.inline_instances.append(inline(self.model, self.admin_site))
-        return super(TextPluginNextGeneration, self).change_view(request, object_id, extra_context)
+        return super(TextPluginNextGeneration, self).change_view(request, object_id, extra_context=extra_context, form_url=form_url)
 
     def add_view(self, request, form_url='', extra_context=None):
         self.inlines = []
